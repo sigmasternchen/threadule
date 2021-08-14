@@ -6,7 +6,9 @@ import (
 )
 
 func (d *Data) UpdateThread(thread *models.Thread) error {
-	return d.db.Save(thread).Error
+	return d.db.
+		Save(thread).
+		Error
 }
 
 func (d *Data) GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error) {
@@ -14,7 +16,8 @@ func (d *Data) GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error)
 	err := d.db.
 		Where("thread_id = ?", thread.ID).
 		Order("ordinal ASC").
-		Find(&tweets).Error
+		Find(&tweets).
+		Error
 	return tweets, err
 }
 
