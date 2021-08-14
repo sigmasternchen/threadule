@@ -43,18 +43,21 @@ func (l *Logic) firstTimeSetup() error {
 	}
 
 	adminUser := models.GetDefaultAdminUser()
-	adminUser.Groups = []*models.Group{adminGroup}
 	password := l.defaultPassword()
 	adminUser.Password, err = l.hashPassword(password)
-
 	if err != nil {
 		// if this fails we can't recover anyway
 		l.ctx.Log.Fatal(err)
 	}
-
 	err = l.ctx.Data.CreateUser(adminUser)
 	if err != nil {
 		l.ctx.Log.Errorf("couldn't create admin user: %v", err)
+		return err
+	}
+
+	err = l.ctx.Data.AddUserToGroup(adminUser, adminGroup)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't add admin user to admin group: %v", err)
 		return err
 	}
 

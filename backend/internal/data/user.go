@@ -33,3 +33,18 @@ func (d *Data) GetUserByUsername(username string) (*models.User, error) {
 		return &user, nil
 	}
 }
+
+func (d *Data) AddUserToGroup(user *models.User, group *models.Group) error {
+	return d.db.
+		Model(user).
+		Omit("Groups.*").
+		Association("Groups").
+		Append([]models.Group{*group})
+}
+
+func (d *Data) DeleteUserFromGroup(user *models.User, group *models.Group) error {
+	return d.db.
+		Model(user).
+		Association("Groups").
+		Delete(group)
+}
