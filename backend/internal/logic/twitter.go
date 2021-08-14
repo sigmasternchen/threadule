@@ -1,6 +1,8 @@
 package logic
 
-import "threadule/backend/internal/data/models"
+import (
+	"threadule/backend/internal/data/models"
+)
 import "github.com/dghubble/oauth1"
 import "github.com/dghubble/go-twitter/twitter"
 
@@ -99,4 +101,16 @@ func (l *Logic) sendThread(thread *models.Thread) {
 	thread.Status = models.ThreadDone
 	_ = l.ctx.Data.UpdateThread(thread)
 	// TODO log data error
+}
+
+func (l *Logic) scheduleTrigger() {
+	threads, err := l.ctx.Data.GetScheduledThreads()
+	if err != nil {
+		// TODO log error
+		return
+	}
+
+	for _, thread := range threads {
+		l.sendThread(&thread)
+	}
 }

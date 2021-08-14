@@ -9,7 +9,11 @@ type Logic struct {
 var _ app.Logic = &Logic{}
 
 func Setup(ctx *app.Context) (app.Logic, error) {
-	return &Logic{
+	logic := &Logic{
 		ctx: ctx,
-	}, nil
+	}
+
+	logic.startScheduler()
+
+	return logic, nil
 }
