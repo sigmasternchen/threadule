@@ -10,6 +10,7 @@ import (
 
 func ctxWrapper(appCtx *app.Context, handler web.Handler) httprouter.Handle {
 	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+		writer.Header().Add("Content-Type", "application/json")
 		start := time.Now()
 		handler(&web.Context{
 			Response: writer,
@@ -18,7 +19,7 @@ func ctxWrapper(appCtx *app.Context, handler web.Handler) httprouter.Handle {
 			AppCtx:   appCtx,
 		})
 		end := time.Now()
-		appCtx.AccessLog.Printf("%s %s; %lld ms", request.Method, request.URL.String(), end.Sub(start).Milliseconds())
+		appCtx.AccessLog.Printf("%s %s; %d ms", request.Method, request.URL.String(), end.Sub(start).Milliseconds())
 	}
 }
 

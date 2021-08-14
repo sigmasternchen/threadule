@@ -40,11 +40,11 @@ func (l *Logic) Login(username, password string) (string, error) {
 	user, err := l.ctx.Data.GetUserByUsername(username)
 
 	// the following few lines should prevent timing attacks
-	hash := "something"
+	hash := ""
 	if err == nil {
 		hash = user.Password
 	} else {
-		password = "something else"
+		password = "something"
 	}
 
 	if l.checkPassword(hash, password) && user != nil {

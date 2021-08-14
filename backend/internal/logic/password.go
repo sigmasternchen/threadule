@@ -4,6 +4,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 const defaultPasswordLength = 16
@@ -14,6 +15,7 @@ const defaultPasswordCharSet = "abcdefghijklmnopqrstuvwxyz" +
 
 func (l *Logic) defaultPassword() string {
 	builder := strings.Builder{}
+	rand.Seed(time.Now().Unix())
 	for i := 0; i < defaultPasswordLength; i++ {
 		builder.WriteRune(rune(defaultPasswordCharSet[rand.Intn(len(defaultPasswordCharSet))]))
 	}

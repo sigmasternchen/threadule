@@ -1,6 +1,9 @@
 package data
 
-import "threadule/backend/internal/data/models"
+import (
+	"gorm.io/gorm/clause"
+	"threadule/backend/internal/data/models"
+)
 
 func (d *Data) CountUsers() (int64, error) {
 	var c int64
@@ -13,6 +16,7 @@ func (d *Data) CountUsers() (int64, error) {
 
 func (d *Data) CreateUser(user *models.User) error {
 	return d.db.
+		Omit(clause.Associations).
 		Create(user).
 		Error
 }

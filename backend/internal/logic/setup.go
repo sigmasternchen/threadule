@@ -46,6 +46,7 @@ func (l *Logic) firstTimeSetup() error {
 	adminUser.Groups = []*models.Group{adminGroup}
 	password := l.defaultPassword()
 	adminUser.Password, err = l.hashPassword(password)
+
 	if err != nil {
 		// if this fails we can't recover anyway
 		l.ctx.Log.Fatal(err)

@@ -1,12 +1,14 @@
 package data
 
 import (
+	"gorm.io/gorm/clause"
 	"threadule/backend/internal/data/models"
 	"time"
 )
 
 func (d *Data) UpdateThread(thread *models.Thread) error {
 	return d.db.
+		Omit(clause.Associations).
 		Save(thread).
 		Error
 }
