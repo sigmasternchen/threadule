@@ -3,6 +3,8 @@ package app
 import "threadule/backend/internal/data/models"
 
 type Data interface {
+	CleanupSessions() error
+
 	UpdateTweet(tweet *models.Tweet) error
 
 	GetScheduledThreads() ([]models.Thread, error)

@@ -8,7 +8,8 @@ func (l *Logic) startScheduler() {
 	go func() {
 		for {
 			_ = <-ticker.C
-			l.scheduleTrigger()
+			l.scheduleTriggerTwitter()
+			l.scheduleTriggerAuth()
 		}
 	}()
 }

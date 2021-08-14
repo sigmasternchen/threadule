@@ -21,6 +21,7 @@ func migrate(ctx *app.Context, db *gorm.DB) error {
 
 	errs = append(errs, db.AutoMigrate(&models.Group{}))
 	errs = append(errs, db.AutoMigrate(&models.User{}))
+	errs = append(errs, db.AutoMigrate(&models.Session{}))
 	errs = append(errs, db.AutoMigrate(&models.Account{}))
 	errs = append(errs, db.AutoMigrate(&models.Tweet{}))
 	errs = append(errs, db.AutoMigrate(&models.Thread{}))

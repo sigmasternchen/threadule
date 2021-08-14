@@ -109,7 +109,7 @@ func (l *Logic) sendThread(thread *models.Thread) {
 	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 }
 
-func (l *Logic) scheduleTrigger() {
+func (l *Logic) scheduleTriggerTwitter() {
 	threads, err := l.ctx.Data.GetScheduledThreads()
 	if err != nil {
 		l.ctx.Log.Errorf("couldn't get scheduled threads from DB: %v", err)
