@@ -7,3 +7,9 @@ type User struct {
 	Username string
 	Password string
 }
+
+func GetDefaultAdminUser() *User {
+	return &User{
+		Username: "admin",
+	}
+}

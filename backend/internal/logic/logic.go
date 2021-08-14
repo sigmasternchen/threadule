@@ -9,13 +9,3 @@ type Logic struct {
 }
 
 var _ app.Logic = &Logic{}
-
-func Setup(ctx *app.Context) (app.Logic, error) {
-	logic := &Logic{
-		ctx: ctx,
-	}
-
-	logic.startScheduler()
-
-	return logic, nil
-}

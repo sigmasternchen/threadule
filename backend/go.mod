@@ -10,6 +10,7 @@ require (
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.0-beta.3
 	github.com/satori/go.uuid v1.2.0
+	golang.org/x/crypto v0.0.0-20210813211128-0a44fdfbc16e
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gorm.io/driver/mysql v1.1.2
 	gorm.io/gorm v1.21.13
