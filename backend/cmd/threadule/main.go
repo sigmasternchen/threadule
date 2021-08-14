@@ -27,21 +27,24 @@ func main() {
 
 	ctx := &app.Context{
 		Config:    cfg,
-		Log:       logger.Init("message logger", false, false, ioutil.Discard),
+		Log:       logger.Init("message logger", true, false, ioutil.Discard),
 		AccessLog: log.New(os.Stdout, "access", log.Ldate|log.Lmicroseconds|log.Lmsgprefix),
 	}
 
+	ctx.Log.Info("setting up logic layer")
 	ctx.Logic, err = logic.Setup(ctx)
 	if err != nil {
 		ctx.Log.Error("couldn't setup logic layer")
 		ctx.Log.Fatal(err)
 	}
 
+	ctx.Log.Info("setting up persistence layer")
 	ctx.Data, err = data.Setup(ctx)
 	if err != nil {
 		ctx.Log.Fatal("couldn't setup persistence layer")
 	}
 
+	ctx.Log.Info("setting up routes")
 	handler := router.Setup(ctx)
 	err = web.StartServer(ctx, handler)
 	if err != nil {
