@@ -21,12 +21,19 @@ func (d *Data) GetSession(id string) (*models.Session, error) {
 		Error
 	if err != nil {
 		return nil, err
+	} else {
+		return &session, nil
 	}
-	return &session, nil
 }
 
 func (d *Data) UpdateSession(session *models.Session) error {
 	return d.db.
 		Save(session).
+		Error
+}
+
+func (d *Data) AddSession(session *models.Session) error {
+	return d.db.
+		Create(session).
 		Error
 }

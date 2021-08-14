@@ -16,3 +16,16 @@ func (d *Data) CreateUser(user *models.User) error {
 		Create(user).
 		Error
 }
+
+func (d *Data) GetUserByUsername(username string) (*models.User, error) {
+	var user models.User
+	err := d.db.
+		Where("username = ?", username).
+		First(&user).
+		Error
+	if err != nil {
+		return nil, err
+	} else {
+		return &user, nil
+	}
+}
