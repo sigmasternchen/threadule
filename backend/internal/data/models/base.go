@@ -7,10 +7,10 @@ import (
 )
 
 type BaseModel struct {
-	ID        uuid.UUID `gorm:"type:char(36);primary_key;"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID        uuid.UUID      `gorm:"type:char(36);primary_key;" json:"id"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"-"`
+	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
 func (b *BaseModel) BeforeCreate(_ *gorm.DB) error {

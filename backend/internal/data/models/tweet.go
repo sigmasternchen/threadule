@@ -12,11 +12,11 @@ const (
 
 type Tweet struct {
 	BaseModel
-	ThreadID uuid.UUID
+	ThreadID uuid.UUID `json:"-"`
 
-	Text    string
-	Ordinal int
-	Status  TweetStatus
-	TweetID *int64
-	Error   *string
+	Text    string      `json:"text"`
+	Ordinal int         `json:"ordinal"`
+	Status  TweetStatus `json:"status"`
+	TweetID *int64      `json:"tweet_id"`
+	Error   *string     `json:"error"`
 }

@@ -4,16 +4,16 @@ import uuid "github.com/satori/go.uuid"
 
 type Account struct {
 	BaseModel
-	UserID uuid.UUID
-	User   *User
+	UserID uuid.UUID `json:"-"`
+	User   *User     `json:"-"`
 
-	ScreenName    string
-	TwitterHandle string
-	TwitterID     *int64
-	AvatarURL     string
+	ScreenName    string `json:"screen_name"`
+	TwitterHandle string `json:"twitter_handle"`
+	TwitterID     *int64 `json:"twitter_id"`
+	AvatarURL     string `json:"avatar_url"`
 
-	RequestToken      *string
-	RequestSecret     *string
-	AccessToken       *string
-	AccessTokenSecret *string
+	RequestToken      *string `json:"-"`
+	RequestSecret     *string `json:"-"`
+	AccessToken       *string `json:"-"`
+	AccessTokenSecret *string `json:"-"`
 }

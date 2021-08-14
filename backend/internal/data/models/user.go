@@ -4,8 +4,8 @@ type User struct {
 	BaseModel
 	Groups []*Group `gorm:"many2many:user_groups;"`
 
-	Username string
-	Password string
+	Username string `json:"username"`
+	Password string `json:"-"`
 }
 
 func GetDefaultAdminUser() *User {
