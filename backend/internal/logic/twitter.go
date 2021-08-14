@@ -15,19 +15,22 @@ func (l *Logic) sendTweet(client *twitter.Client, tweet *models.Tweet, prevId in
 	)
 
 	if err != nil {
+		l.ctx.Log.Warningf("couldn't send tweet: %v", err)
 		tweet.Status = models.TweetFailed
 		errorString := new(string)
 		*errorString = err.Error()
 		tweet.Error = errorString
-		_ = l.ctx.Data.UpdateTweet(tweet)
-		// TODO log data error
+		err2 := l.ctx.Data.UpdateTweet(tweet)
+		if err2 != nil {
+			l.ctx.Log.Errorf("couldn't update tweet in DB: %v", err2)
+		}
 
 		return 0, err
 	}
 
 	tweet.Status = models.TweetDone
-	_ = l.ctx.Data.UpdateTweet(tweet)
-	// TODO log data error
+	err = l.ctx.Data.UpdateTweet(tweet)
+	l.ctx.Log.Errorf("couldn't update tweet in DB: %v", err)
 
 	return status.ID, nil
 }
@@ -50,18 +53,19 @@ func (l *Logic) sendThread(thread *models.Thread) {
 	client := l.getTwitterClient(thread.Account)
 
 	thread.Status = models.ThreadProcessing
-	_ = l.ctx.Data.UpdateThread(thread)
-	// TODO log data error
+	err := l.ctx.Data.UpdateThread(thread)
+	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 
 	tweets, err := l.ctx.Data.GetTweetsForThread(thread)
 	if err != nil {
-		// TODO log error
+		l.ctx.Log.Errorf("couldn't get tweets from DB: %v", err)
+
 		errorString := new(string)
 		*errorString = err.Error()
 		thread.Status = models.ThreadFailed
 		thread.Error = errorString
-		_ = l.ctx.Data.UpdateThread(thread)
-		// TODO log error
+		err = l.ctx.Data.UpdateThread(thread)
+		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 
 		return
 	}
@@ -82,7 +86,7 @@ func (l *Logic) sendThread(thread *models.Thread) {
 		for _, id := range tweetIds {
 			_, _, err = client.Statuses.Destroy(id, nil)
 			if err != nil {
-				// TODO log error
+				l.ctx.Log.Errorf("couldn't destroy tweets: %v", err)
 			}
 		}
 
@@ -94,19 +98,21 @@ func (l *Logic) sendThread(thread *models.Thread) {
 			thread.Error = errorString
 		}
 
-		_ = l.ctx.Data.UpdateThread(thread)
-		// TODO log data error
+		err = l.ctx.Data.UpdateThread(thread)
+		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+
+		return
 	}
 
 	thread.Status = models.ThreadDone
-	_ = l.ctx.Data.UpdateThread(thread)
-	// TODO log data error
+	err = l.ctx.Data.UpdateThread(thread)
+	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 }
 
 func (l *Logic) scheduleTrigger() {
 	threads, err := l.ctx.Data.GetScheduledThreads()
 	if err != nil {
-		// TODO log error
+		l.ctx.Log.Errorf("couldn't get scheduled threads from DB: %v", err)
 		return
 	}
 

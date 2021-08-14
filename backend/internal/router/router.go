@@ -5,16 +5,20 @@ import (
 	"net/http"
 	"threadule/backend/internal/app"
 	"threadule/backend/internal/web"
+	"time"
 )
 
 func ctxWrapper(appCtx *app.Context, handler web.Handler) httprouter.Handle {
 	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+		start := time.Now()
 		handler(&web.Context{
 			Response: writer,
 			Request:  request,
 			Params:   params,
 			AppCtx:   appCtx,
 		})
+		end := time.Now()
+		appCtx.AccessLog.Printf("%s %s; %lld ms", request.Method, request.URL.String(), end.Sub(start).Milliseconds())
 	}
 }
 

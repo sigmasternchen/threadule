@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/google/logger"
+	"log"
+	"os"
 	"threadule/backend/internal/app"
 	"threadule/backend/internal/config"
 	"threadule/backend/internal/data"
@@ -24,28 +27,27 @@ func main() {
 	}
 
 	ctx := &app.Context{
-		Config: cfg,
+		Config:    cfg,
+		Log:       logger.Init("default", false, true, os.Stderr),
+		AccessLog: log.New(os.Stdout, "access", log.Ldate|log.Lmicroseconds|log.Lmsgprefix),
 	}
 
 	ctx.Logic, err = logic.Setup(ctx)
 	if err != nil {
-		fmt.Println("couldn't setup logic layer")
-		fmt.Println(err)
-		return
+		ctx.Log.Error("couldn't setup logic layer")
+		ctx.Log.Fatal(err)
 	}
 
 	ctx.Data, err = data.Setup(ctx)
 	if err != nil {
-		fmt.Println("couldn't setup persistence layer")
-		fmt.Println(err)
-		return
+		ctx.Log.Error("couldn't setup persistence layer")
+		ctx.Log.Fatal(err)
 	}
 
 	handler := router.Setup(ctx)
 	err = web.StartServer(ctx, handler)
 	if err != nil {
-		fmt.Println("couldn't start web server")
-		fmt.Println(err)
-		return
+		ctx.Log.Error("couldn't start web server")
+		ctx.Log.Fatal(err)
 	}
 }
