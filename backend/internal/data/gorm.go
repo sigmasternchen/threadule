@@ -10,6 +10,9 @@ import (
 )
 
 func connect(dsn string) (*gorm.DB, error) {
+	if strings.TrimSpace(dsn) == "" {
+		return nil, errors.New("DSN is empty")
+	}
 	return gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 
