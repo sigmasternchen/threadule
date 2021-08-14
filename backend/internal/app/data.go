@@ -18,6 +18,8 @@ type Data interface {
 
 	UpdateTweet(tweet *models.Tweet) error
 
+	GetAccountsByUser(user *models.User) ([]models.Account, error)
+
 	GetScheduledThreads() ([]models.Thread, error)
 	GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error)
 	UpdateThread(thread *models.Thread) error
