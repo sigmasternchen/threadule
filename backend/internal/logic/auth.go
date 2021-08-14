@@ -9,8 +9,9 @@ import (
 const sessionDuration = 7 * 24 * time.Hour
 
 var (
-	ErrLoginFailed   = errors.New("login failed")
-	ErrInternalError = errors.New("something went wrong")
+	ErrLoginFailed    = errors.New("login failed")
+	ErrInvalidSession = errors.New("invalid session")
+	ErrInternalError  = errors.New("something went wrong")
 )
 
 func (l *Logic) scheduleTriggerAuth() {
@@ -23,7 +24,7 @@ func (l *Logic) scheduleTriggerAuth() {
 func (l *Logic) AuthenticateSession(token string) (*models.User, error) {
 	session, err := l.ctx.Data.GetSession(token)
 	if err != nil {
-		return nil, errors.New("invalid session")
+		return nil, ErrInvalidSession
 	}
 
 	session.ValidUntil = time.Now().Add(sessionDuration)
