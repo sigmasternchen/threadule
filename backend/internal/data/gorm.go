@@ -36,11 +36,11 @@ func migrate(ctx *app.Context, db *gorm.DB) error {
 			last = err.Error()
 		}
 	}
-	errorString := strings.TrimSpace(errorBuilder.String())
-	ctx.Log.Errorf("migration error: %v", errorString)
 	if errorBuilder.Len() == 0 {
 		return nil
 	} else {
+		errorString := strings.TrimSpace(errorBuilder.String())
+		ctx.Log.Errorf("migration error: %v", errorString)
 		return errors.New(errorString)
 	}
 }
