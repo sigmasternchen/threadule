@@ -14,7 +14,7 @@ func (d *Data) CountUsers() (int64, error) {
 	return c, err
 }
 
-func (d *Data) CreateUser(user *models.User) error {
+func (d *Data) AddUser(user *models.User) error {
 	return d.db.
 		Omit(clause.Associations).
 		Create(user).

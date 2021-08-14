@@ -14,6 +14,8 @@ func Setup(ctx *app.Context) http.Handler {
 	router.GET("/authentication", authenticated(GetAuthenticationData))
 
 	router.GET("/account/", authenticated(GetAccounts))
+	router.POST("/account/", authenticated(AddAccount))
+	router.POST("/account/:id", authenticated(AddAccountResolve))
 
 	return router
 }

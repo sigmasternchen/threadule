@@ -1,18 +1,11 @@
 package logic
 
 import (
-	"errors"
 	"threadule/backend/internal/data/models"
 	"time"
 )
 
 const sessionDuration = 7 * 24 * time.Hour
-
-var (
-	ErrLoginFailed    = errors.New("login failed")
-	ErrInvalidSession = errors.New("invalid session")
-	ErrInternalError  = errors.New("something went wrong")
-)
 
 func (l *Logic) scheduleTriggerAuth() {
 	err := l.ctx.Data.CleanupSessions()

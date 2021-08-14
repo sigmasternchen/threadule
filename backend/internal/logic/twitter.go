@@ -1,10 +1,12 @@
 package logic
 
 import (
+	"net/url"
 	"threadule/backend/internal/data/models"
 )
 import "github.com/dghubble/oauth1"
 import "github.com/dghubble/go-twitter/twitter"
+import twitterOAuth "github.com/dghubble/oauth1/twitter"
 
 func (l *Logic) sendTweet(client *twitter.Client, tweet *models.Tweet, prevId int64) (int64, error) {
 	status, _, err := client.Statuses.Update(
@@ -35,7 +37,7 @@ func (l *Logic) sendTweet(client *twitter.Client, tweet *models.Tweet, prevId in
 	return status.ID, nil
 }
 
-func (l *Logic) getTwitterClient(account *models.Account) *twitter.Client {
+func (l *Logic) getAcountClient(account *models.Account) *twitter.Client {
 	config := oauth1.NewConfig(
 		l.ctx.Config.Twitter.ConsumerKey,
 		l.ctx.Config.Twitter.ConsumerSecret,
@@ -50,7 +52,7 @@ func (l *Logic) getTwitterClient(account *models.Account) *twitter.Client {
 }
 
 func (l *Logic) sendThread(thread *models.Thread) {
-	client := l.getTwitterClient(thread.Account)
+	client := l.getAcountClient(thread.Account)
 
 	thread.Status = models.ThreadProcessing
 	err := l.ctx.Data.UpdateThread(thread)
@@ -119,4 +121,80 @@ func (l *Logic) scheduleTriggerTwitter() {
 	for _, thread := range threads {
 		l.sendThread(&thread)
 	}
+}
+
+func (l *Logic) getTwitterOAuthConfig() *oauth1.Config {
+	return &oauth1.Config{
+		ConsumerKey:    l.ctx.Config.Twitter.ConsumerKey,
+		ConsumerSecret: l.ctx.Config.Twitter.ConsumerSecret,
+		CallbackURL:    "oob",
+		Endpoint:       twitterOAuth.AuthorizeEndpoint,
+	}
+}
+
+func (l *Logic) twitterLoginInit(account *models.Account) (string, *url.URL, error) {
+	oauth1Config := l.getTwitterOAuthConfig()
+
+	requestToken, requestSecret, err := oauth1Config.RequestToken()
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't get requestToken: %v", err)
+		return "", nil, ErrInternalError
+	}
+
+	account.RequestToken = &requestToken
+	account.RequestSecret = &requestSecret
+	err = l.ctx.Data.UpdateAccount(account)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't update account in database: %v", err)
+		return "", nil, ErrInternalError
+	}
+
+	authUrl, err := oauth1Config.AuthorizationURL(requestToken)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't get authorization url: %v", err)
+		return "", nil, ErrInternalError
+	}
+
+	return account.ID.String(), authUrl, nil
+}
+
+func (l *Logic) twitterLoginResolve(account *models.Account, pin string) error {
+	oauth1Config := l.getTwitterOAuthConfig()
+
+	accessToken, accessSecret, err := oauth1Config.AccessToken(*account.RequestToken, *account.RequestSecret, pin)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't get access token: %v", err)
+		return ErrInternalError
+	}
+
+	account.AccessToken = &accessToken
+	account.AccessTokenSecret = &accessSecret
+	account.RequestToken = nil
+	account.RequestSecret = nil
+
+	twitterClient := l.getAcountClient(account)
+
+	accountVerifyParams := &twitter.AccountVerifyParams{
+		IncludeEntities: twitter.Bool(false),
+		SkipStatus:      twitter.Bool(true),
+		IncludeEmail:    twitter.Bool(false),
+	}
+	user, _, err := twitterClient.Accounts.VerifyCredentials(accountVerifyParams)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't verify credentials: %v", err)
+		return ErrInternalError
+	}
+
+	account.TwitterID = &user.ID
+	account.TwitterHandle = user.Name
+	account.ScreenName = user.ScreenName
+	account.AvatarURL = user.ProfileImageURL
+
+	err = l.ctx.Data.UpdateAccount(account)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't update account in database: %v", err)
+		return ErrInternalError
+	}
+
+	return nil
 }

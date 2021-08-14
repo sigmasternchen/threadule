@@ -1,6 +1,9 @@
 package data
 
-import "threadule/backend/internal/data/models"
+import (
+	"gorm.io/gorm/clause"
+	"threadule/backend/internal/data/models"
+)
 
 func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	var accounts []models.Account
@@ -18,4 +21,32 @@ func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 
 		return accounts, nil
 	}
+}
+
+func (d *Data) GetAccountById(user *models.User, id string) (*models.Account, error) {
+	var account models.Account
+	err := d.db.
+		Where("user_id = ?", user.ID).
+		Where("id = ?", id).
+		First(&account).
+		Error
+	if err != nil {
+		return nil, err
+	} else {
+		return &account, nil
+	}
+}
+
+func (d *Data) AddAccount(account *models.Account) error {
+	return d.db.
+		Omit(clause.Associations).
+		Create(account).
+		Error
+}
+
+func (d *Data) UpdateAccount(account *models.Account) error {
+	return d.db.
+		Omit(clause.Associations).
+		Save(account).
+		Error
 }

@@ -24,6 +24,8 @@ func StatusResponse(ctx *web.Context, status int, details string) {
 
 func ErrorResponse(ctx *web.Context, err error) {
 	switch err {
+	case logic.ErrInvalidParameter:
+		StatusResponse(ctx, http.StatusBadRequest, err.Error())
 	case logic.ErrLoginFailed:
 		StatusResponse(ctx, http.StatusForbidden, err.Error())
 	case logic.ErrInvalidSession:
@@ -33,4 +35,9 @@ func ErrorResponse(ctx *web.Context, err error) {
 	default:
 		StatusResponse(ctx, http.StatusInternalServerError, err.Error())
 	}
+}
+
+func RedirectResponse(ctx *web.Context, url string) {
+	ctx.Response.Header().Add("Location", url)
+	ctx.Response.WriteHeader(http.StatusFound)
 }

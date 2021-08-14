@@ -7,7 +7,13 @@ type Account struct {
 	UserID uuid.UUID
 	User   *User
 
-	Name              string
+	ScreenName    string
+	TwitterHandle string
+	TwitterID     *int64
+	AvatarURL     string
+
+	RequestToken      *string
+	RequestSecret     *string
 	AccessToken       *string
 	AccessTokenSecret *string
 }
