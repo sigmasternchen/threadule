@@ -5,12 +5,22 @@ import (
 	"time"
 )
 
+type ThreadStatus string
+
+const (
+	ThreadScheduled  ThreadStatus = "SCHEDULED"
+	ThreadProcessing ThreadStatus = "PROCESSING"
+	ThreadFailed     ThreadStatus = "FAILED"
+	ThreadDone       ThreadStatus = "DONE"
+)
+
 type Thread struct {
 	BaseModel
 	AccountID uuid.UUID
 	Account   *Account
 	Tweets    []Tweet
 
-	Sent         bool
 	ScheduledFor time.Time
+	Status       ThreadStatus
+	Error        *string
 }

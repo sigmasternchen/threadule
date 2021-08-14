@@ -11,15 +11,25 @@ type database struct {
 	DSN string
 }
 
+type twitter struct {
+	ConsumerKey    string
+	ConsumerSecret string
+}
+
 type Config struct {
 	Port     uint
 	Database database
+	Twitter  twitter
 }
 
 func writeDefaultConfig(path string) error {
 	content, err := toml.Marshal(&Config{
 		Port:     8080,
 		Database: database{DSN: ""},
+		Twitter: twitter{
+			ConsumerKey:    "",
+			ConsumerSecret: "",
+		},
 	})
 	if err != nil {
 		return fmt.Errorf("couldn't generate default config: %w", err)
