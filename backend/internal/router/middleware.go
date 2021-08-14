@@ -11,9 +11,9 @@ const authPrefix = "Bearer "
 
 func authenticated(next web.Handler) web.Handler {
 	return func(ctx *web.Context) {
-		authHeader := ctx.Request.Header.Get("Authentication")
+		authHeader := ctx.Request.Header.Get("Authorization")
 		if !strings.HasPrefix(authHeader, authPrefix) {
-			StatusResponse(ctx, http.StatusBadRequest, "Authentication header missing or malformed")
+			StatusResponse(ctx, http.StatusBadRequest, "Authorization header missing or malformed")
 			return
 		}
 		authHeader = strings.TrimPrefix(authHeader, authPrefix)
