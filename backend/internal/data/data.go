@@ -16,10 +16,11 @@ var _ app.Data = &Data{}
 func Setup(ctx *app.Context) (app.Data, error) {
 	db, err := connect(ctx.Config.Database.DSN)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to database: %w", err)
+		ctx.Log.Errorf("failed to connect to database: %v", err)
+		return nil, err
 	}
 
-	err = migrate(db)
+	err = migrate(ctx, db)
 	if err != nil {
 		return nil, fmt.Errorf("failed to migrate models: %w", err)
 	}

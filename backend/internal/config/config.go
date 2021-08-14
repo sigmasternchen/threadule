@@ -1,11 +1,16 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"github.com/pelletier/go-toml/v2"
 	"io/fs"
 	"os"
 )
+
+type web struct {
+	Port uint
+}
 
 type database struct {
 	DSN string
@@ -17,14 +22,14 @@ type twitter struct {
 }
 
 type Config struct {
-	Port     uint
+	Web      web
 	Database database
 	Twitter  twitter
 }
 
 func writeDefaultConfig(path string) error {
 	content, err := toml.Marshal(&Config{
-		Port:     8080,
+		Web:      web{Port: 8080},
 		Database: database{DSN: ""},
 		Twitter: twitter{
 			ConsumerKey:    "",
@@ -35,7 +40,12 @@ func writeDefaultConfig(path string) error {
 		return fmt.Errorf("couldn't generate default config: %w", err)
 	}
 
-	return os.WriteFile(path, content, fs.FileMode(0640))
+	err = os.WriteFile(path, content, fs.FileMode(0640))
+	if err != nil {
+		return err
+	}
+
+	return errors.New(fmt.Sprintf("config file not be read; generated empty file in: %s", path))
 }
 
 func Read(path string) (*Config, error) {

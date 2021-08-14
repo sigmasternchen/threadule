@@ -7,5 +7,5 @@ import (
 )
 
 func StartServer(ctx *app.Context, handler http.Handler) error {
-	return http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", ctx.Config.Port), handler)
+	return http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", ctx.Config.Web.Port), handler)
 }

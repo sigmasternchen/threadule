@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/google/logger"
+	"io/ioutil"
 	"log"
 	"os"
 	"threadule/backend/internal/app"
@@ -21,14 +21,13 @@ func main() {
 
 	cfg, err := config.Read(*configFile)
 	if err != nil {
-		fmt.Println("reading config file failed")
-		fmt.Println(err)
-		return
+		log.Println("reading config file failed")
+		log.Fatal(err)
 	}
 
 	ctx := &app.Context{
 		Config:    cfg,
-		Log:       logger.Init("default", false, true, os.Stderr),
+		Log:       logger.Init("message logger", false, false, ioutil.Discard),
 		AccessLog: log.New(os.Stdout, "access", log.Ldate|log.Lmicroseconds|log.Lmsgprefix),
 	}
 
@@ -40,8 +39,7 @@ func main() {
 
 	ctx.Data, err = data.Setup(ctx)
 	if err != nil {
-		ctx.Log.Error("couldn't setup persistence layer")
-		ctx.Log.Fatal(err)
+		ctx.Log.Fatal("couldn't setup persistence layer")
 	}
 
 	handler := router.Setup(ctx)
