@@ -9,7 +9,6 @@ export type Client = {
 
 export const getClient = (authToken?: string): Client => {
     if (authToken) {
-        console.log(authToken)
         return {
             axios: axios.create({
                 headers: {

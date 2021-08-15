@@ -5,6 +5,7 @@ import {TextField} from "formik-material-ui";
 import {useAuth} from "../../auth/AuthProvider";
 import * as yup from "yup"
 import {useState} from "react";
+import {useHistory} from "react-router-dom";
 
 type LoginFormProps = {
     username: string
@@ -19,13 +20,15 @@ const LoginFormValidationSchema = yup.object({
 const Login = () => {
 
     const auth = useAuth()
+    const history = useHistory()
+
     const [error, setError] = useState<string|null>(null)
 
     const onSubmit = async (values: LoginFormProps, helper: FormikHelpers<LoginFormProps>) => {
-        console.log(values)
         try {
             const user = await auth.login(values.username, values.password)
             console.log(user)
+            history.push("/");
         } catch (e) {
             helper.setSubmitting(false)
             setError("Login failed!")
