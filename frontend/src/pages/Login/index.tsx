@@ -37,7 +37,7 @@ const Login = () => {
     }
 
     return (
-        <Grid container xs={12} justifyContent="center">
+        <Grid container justifyContent="center">
             <Grid item container xs={4} spacing={2}>
                 <Formik<LoginFormProps>
                     initialValues={{

@@ -44,8 +44,9 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
             })
     }, [])
 
-    return <div style={{
-        marginTop: "40px"
+    return <Grid container style={{
+        marginTop: "40px",
+        boxSizing: "border-box",
     }}>
         { loading &&
             <CircularProgress />
@@ -57,11 +58,11 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                 No accounts yet.
             </Typography>
         }
-        <Grid container xs={12} spacing={4}>
+        <Grid item container spacing={4}>
         {
             accounts.map((account) => {
-                return <>
-                    <Grid item xs={4}>
+                return (
+                    <Grid item xs={4} key={account.id}>
                         <Card>
                             <CardHeader
                                 avatar={
@@ -76,13 +77,13 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                             />
                         </Card>
                     </Grid>
-                </>
+                )
             })
         }
         </Grid>
 
         <MessageBox {...message} />
-    </div>
+    </Grid>
 }
 
 export default Dashboard
