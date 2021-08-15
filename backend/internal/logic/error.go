@@ -7,4 +7,5 @@ var (
 	ErrInvalidSession   = errors.New("invalid session")
 	ErrInternalError    = errors.New("something went wrong")
 	ErrInvalidParameter = errors.New("invalid parameter")
+	ErrNotFound         = errors.New("resource not found")
 )

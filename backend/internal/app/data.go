@@ -21,6 +21,7 @@ type Data interface {
 	AddAccount(account *models.Account) error
 	UpdateAccount(account *models.Account) error
 
+	AddThread(thread *models.Thread) error
 	GetScheduledThreads() ([]models.Thread, error)
 	GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error)
 	UpdateThread(thread *models.Thread) error

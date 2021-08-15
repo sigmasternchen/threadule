@@ -1,3 +1,4 @@
+import Tweet from "./Tweet";
 
 export enum ThreadStatus {
     SCHEDULED = "SCHEDULED",
@@ -8,10 +9,10 @@ export enum ThreadStatus {
 
 type Thread = {
     id: string,
-    //tweets: Tweet[],
+    tweets: Tweet[],
     scheduled_for: Date,
     status: ThreadStatus,
-    error: string|null
+    error: string|null,
 }
 
 export default Thread

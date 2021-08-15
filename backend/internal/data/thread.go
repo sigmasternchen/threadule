@@ -33,3 +33,10 @@ func (d *Data) GetScheduledThreads() ([]models.Thread, error) {
 		Error
 	return threads, err
 }
+
+func (d *Data) AddThread(thread *models.Thread) error {
+	return d.db.
+		Omit("Account").
+		Create(thread).
+		Error
+}

@@ -12,4 +12,6 @@ type Logic interface {
 	GetAccounts(user *models.User) ([]models.Account, error)
 	AddAccount(user *models.User) (string, *url.URL, error)
 	AddAccountResolve(user *models.User, id string, pin string) (*models.Account, error)
+
+	AddThread(thread *models.Thread, user *models.User) error
 }

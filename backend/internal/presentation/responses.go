@@ -24,6 +24,8 @@ func StatusResponse(ctx *web.Context, status int, details string) {
 
 func ErrorResponse(ctx *web.Context, err error) {
 	switch err {
+	case logic.ErrNotFound:
+		StatusResponse(ctx, http.StatusNotFound, err.Error())
 	case logic.ErrInvalidParameter:
 		StatusResponse(ctx, http.StatusBadRequest, err.Error())
 	case logic.ErrLoginFailed:

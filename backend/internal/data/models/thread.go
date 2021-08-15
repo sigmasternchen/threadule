@@ -17,7 +17,7 @@ const (
 type Thread struct {
 	BaseModel
 	AccountID uuid.UUID `json:"-"`
-	Account   *Account  `json:"-"`
+	Account   *Account  `json:"account"`
 	Tweets    []Tweet   `json:"tweets"`
 
 	ScheduledFor time.Time    `json:"scheduled_for"`
