@@ -29,7 +29,7 @@ const MenuBar: FunctionComponent<MenuBarProps> = () => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" style={{flexGrow: 1}}>
-                    News
+                    Threadule
                 </Typography>
                 <IconButton
                     aria-label="account of current user"

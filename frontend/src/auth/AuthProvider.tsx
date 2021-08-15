@@ -6,9 +6,10 @@ import {Backdrop, CircularProgress} from "@material-ui/core";
 
 type AuthState = {
     loggedIn: boolean
-    user: User|null
+    user: User | null
 
     login: (username: string, password: string) => Promise<User>
+    getClient: () => Client
 }
 
 const emptyAuthState = {
@@ -17,7 +18,8 @@ const emptyAuthState = {
 
     login: async () => {
         throw "not implemented"
-    }
+    },
+    getClient: () => getClient()
 }
 
 const AuthContext = React.createContext<AuthState>(emptyAuthState)
@@ -65,8 +67,12 @@ const AuthProvider: FunctionComponent<AuthProviderProps> = ({children}) => {
             })
 
             return user
+        },
+        getClient: () => {
+            return client
         }
     })
+
 
     useEffect(() => {
         if (initialSessionToken) {
