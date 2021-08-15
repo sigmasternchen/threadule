@@ -9,7 +9,7 @@ type MenuBarProps = {
 }
 
 const MenuBar: FunctionComponent<MenuBarProps> = () => {
-    const { user } = useAuth()
+    const { user, logout } = useAuth()
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement|null>(null)
     const open = Boolean(anchorEl);
@@ -55,8 +55,7 @@ const MenuBar: FunctionComponent<MenuBarProps> = () => {
                     open={open}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={logout}>Logout</MenuItem>
                 </Menu>
             </Toolbar>
         </AppBar>

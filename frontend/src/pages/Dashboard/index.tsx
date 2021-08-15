@@ -23,8 +23,8 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
         }
     })
 
-    const {getClient} = useAuth()
-    const accountEndpoint = new AccountEndpoint(getClient())
+    const {client} = useAuth()
+    const accountEndpoint = new AccountEndpoint(client)
 
     useEffect(() => {
         accountEndpoint.getAll()

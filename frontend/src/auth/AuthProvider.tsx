@@ -9,7 +9,8 @@ type AuthState = {
     user: User | null
 
     login: (username: string, password: string) => Promise<User>
-    getClient: () => Client
+    logout: () => void
+    client: Client
 }
 
 const emptyAuthState = {
@@ -19,7 +20,8 @@ const emptyAuthState = {
     login: async () => {
         throw "not implemented"
     },
-    getClient: () => getClient()
+    logout: () => {},
+    client: getClient(),
 }
 
 const AuthContext = React.createContext<AuthState>(emptyAuthState)
@@ -38,50 +40,59 @@ const initialSessionToken = localStorage.getItem(LOCAL_STORAGE_SESSION_TOKEN_KEY
 const AuthProvider: FunctionComponent<AuthProviderProps> = ({children}) => {
     const [loading, setLoading] = useState<boolean>(true)
 
-    const [client, setClient] = useState<Client>(getClient(initialSessionToken ? initialSessionToken : undefined))
-    const authenticationEndpoint = new AuthenticationEndpoint(client)
-
     const [authState, setAuthState] = useState<AuthState>({
         ...emptyAuthState,
 
         login: async (username: string, password: string): Promise<User> => {
+            let authenticationEndpoint = new AuthenticationEndpoint(authState.client)
+
             const response = await authenticationEndpoint.login({
                 username: username,
                 password: password
             })
 
-            // local new client
-            const tmpClient = getClient(response.token)
-            setClient(tmpClient)
-
             localStorage.setItem(LOCAL_STORAGE_SESSION_TOKEN_KEY, response.token);
+            const client = getClient(response.token)
 
             // local new authenticationEndpoint
-            const tmpAuthenticationEndpoint = new AuthenticationEndpoint(tmpClient)
-            const user = await tmpAuthenticationEndpoint.getUser()
+            authenticationEndpoint = new AuthenticationEndpoint(client)
+            const user = await authenticationEndpoint.getUser()
 
             setAuthState({
                 ...authState,
                 loggedIn: true,
-                user: user
+                user: user,
+                client: client
             })
 
             return user
         },
-        getClient: () => {
-            return client
+        logout: () => {
+            localStorage.removeItem(LOCAL_STORAGE_SESSION_TOKEN_KEY)
+            setAuthState({
+                ...authState,
+                loggedIn: false,
+                user: null,
+                client: getClient(),
+            })
+
+            // don't use DOM router
+            window.location.replace("/login")
         }
     })
 
 
     useEffect(() => {
         if (initialSessionToken) {
+            const client = getClient(initialSessionToken)
+            const authenticationEndpoint = new AuthenticationEndpoint(client)
             authenticationEndpoint.getUser()
                 .then(user => {
                     setAuthState({
                         ...authState,
                         loggedIn: true,
-                        user: user
+                        user: user,
+                        client: client
                     })
                     setLoading(false)
                 })
