@@ -1,13 +1,12 @@
 import {FunctionComponent, useEffect, useState} from "react";
-import {Avatar, Card, CardHeader, CircularProgress, Grid, IconButton, Typography} from "@material-ui/core";
+import {CircularProgress, Grid, Typography} from "@material-ui/core";
 import Account from "../../api/entities/Account";
 import {useAuth} from "../../auth/AuthProvider";
 import AccountEndpoint from "../../api/endpoints/AccountEndpoint";
 import {ClosedMessageBox, MessageBox, MessageBoxProps} from "../../components/MessageBox";
+import AccountCard from "../../components/AccountCard";
 
-type DashboardProps = {
-
-}
+type DashboardProps = {}
 
 const Dashboard: FunctionComponent<DashboardProps> = () => {
     const [loading, setLoading] = useState<boolean>(true)
@@ -49,38 +48,24 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
         marginTop: "40px",
         boxSizing: "border-box",
     }}>
-        { loading &&
-            <CircularProgress />
+        {loading &&
+        <CircularProgress/>
         }
-        { !loading && accounts.length == 0 &&
-            <Typography variant={"h3"} style={{
-                color: "grey",
-            }}>
-                No accounts yet.
-            </Typography>
+        {!loading && accounts.length == 0 &&
+        <Typography variant={"h3"} style={{
+            color: "grey",
+        }}>
+            No accounts yet.
+        </Typography>
         }
         <Grid item container spacing={4}>
-        {
-            accounts.map((account) => {
-                return (
+            {
+                accounts.map((account) => (
                     <Grid item xs={4} key={account.id}>
-                        <Card>
-                            <CardHeader
-                                avatar={
-                                    <Avatar alt={account.screen_name} src={account.avatar_url} />
-                                }
-                                action={
-                                    <IconButton aria-label="settings">
-                                    </IconButton>
-                                }
-                                title={account.name}
-                                subheader={account.screen_name}
-                            />
-                        </Card>
+                        <AccountCard account={account}/>
                     </Grid>
-                )
-            })
-        }
+                ))
+            }
         </Grid>
 
         <MessageBox {...message} />
