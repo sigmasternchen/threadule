@@ -41,11 +41,12 @@ const AuthProvider: FunctionComponent<AuthProviderProps> = ({children}) => {
             })
 
             // local new client
-            const client = getClient(response.token)
-            setClient(client)
+            console.log(response)
+            const tmpClient = getClient(response.token)
+            setClient(tmpClient)
 
             // local new authenticationEndpoint
-            const tmpAuthenticationEndpoint = new AuthenticationEndpoint(client)
+            const tmpAuthenticationEndpoint = new AuthenticationEndpoint(tmpClient)
             return await tmpAuthenticationEndpoint.getUser()
         }
     })
