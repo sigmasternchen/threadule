@@ -1,9 +1,11 @@
 import React from 'react';
 import './App.css';
 import AuthProvider from "./auth/AuthProvider";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 import PrivateRoute from "./auth/PrivateRoute";
-import Login from "./components/Login";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import MenuBar from "./components/MenuBar";
 
 function App() {
     return (
@@ -14,10 +16,11 @@ function App() {
                         <Login/>
                     </Route>
                     <PrivateRoute path="/">
-                        <h1>Private</h1>
+                        <MenuBar />
+                        <Dashboard />
                     </PrivateRoute>
                     <Route path="/*">
-                        <h1>Test</h1>
+                        <Redirect to={"/login"} />
                     </Route>
                 </Switch>
             </BrowserRouter>
