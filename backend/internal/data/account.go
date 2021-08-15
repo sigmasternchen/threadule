@@ -8,6 +8,7 @@ import (
 func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	var accounts []models.Account
 	err := d.db.
+		Preload("Threads").
 		Where("user_id = ?", user.ID).
 		Find(&accounts).
 		Error

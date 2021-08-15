@@ -29,6 +29,7 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
     useEffect(() => {
         accountEndpoint.getAll()
             .then(accounts => {
+                console.dir(accounts)
                 setAccounts(accounts)
                 setLoading(false)
             })

@@ -7,6 +7,8 @@ type Account struct {
 	UserID uuid.UUID `json:"-"`
 	User   *User     `json:"-"`
 
+	Threads []Thread `json:"threads"`
+
 	ScreenName string `json:"screen_name"`
 	Name       string `json:"name"`
 	TwitterID  *int64 `json:"twitter_id"`
