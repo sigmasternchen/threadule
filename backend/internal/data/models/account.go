@@ -7,10 +7,10 @@ type Account struct {
 	UserID uuid.UUID `json:"-"`
 	User   *User     `json:"-"`
 
-	ScreenName    string `json:"screen_name"`
-	TwitterHandle string `json:"twitter_handle"`
-	TwitterID     *int64 `json:"twitter_id"`
-	AvatarURL     string `json:"avatar_url"`
+	ScreenName string `json:"screen_name"`
+	Name       string `json:"name"`
+	TwitterID  *int64 `json:"twitter_id"`
+	AvatarURL  string `json:"avatar_url"`
 
 	RequestToken      *string `json:"-"`
 	RequestSecret     *string `json:"-"`

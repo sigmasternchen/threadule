@@ -186,7 +186,7 @@ func (l *Logic) twitterLoginResolve(account *models.Account, pin string) error {
 	}
 
 	account.TwitterID = &user.ID
-	account.TwitterHandle = user.Name
+	account.Name = user.Name
 	account.ScreenName = user.ScreenName
 	account.AvatarURL = user.ProfileImageURL
 
