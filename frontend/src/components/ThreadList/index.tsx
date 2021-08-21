@@ -26,7 +26,7 @@ const ThreadList: FunctionComponent<ThreadListProps> = ({threads}) => {
                         <ListItem key={thread.id}>
                             <ListItemAvatar>
                                 <Avatar>
-                                    {thread.id}
+                                    {thread.tweets.length}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
