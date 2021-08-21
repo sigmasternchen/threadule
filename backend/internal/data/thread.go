@@ -2,16 +2,26 @@ package data
 
 import (
 	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"threadule/backend/internal/data/models"
 	"time"
 )
 
 func (d *Data) UpdateThread(thread *models.Thread) error {
-	return d.db.
-		Omit("Account").
-		Save(thread).
-		Error
+	return d.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.
+			Delete(&models.Tweet{}, "thread_id = ?", thread.ID).
+			Error
+		if err != nil {
+			return err
+		}
+
+		return tx.
+			Omit("Account").
+			Save(thread).
+			Error
+	})
 }
 
 func (d *Data) UpdateThreadWithoutTweets(thread *models.Thread) error {
