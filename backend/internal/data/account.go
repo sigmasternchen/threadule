@@ -1,6 +1,7 @@
 package data
 
 import (
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"threadule/backend/internal/data/models"
 )
@@ -8,8 +9,12 @@ import (
 func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	var accounts []models.Account
 	err := d.db.
-		Preload("Threads").
-		Preload("Threads.Tweets").
+		Preload("Threads", func(db *gorm.DB) *gorm.DB {
+			return db.Order("scheduled_for ASC")
+		}).
+		Preload("Threads.Tweets", func(db *gorm.DB) *gorm.DB {
+			return db.Order("ordinal ASC")
+		}).
 		Where("user_id = ?", user.ID).
 		Where("access_token IS NOT NULL").
 		Find(&accounts).
