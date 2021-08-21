@@ -3,13 +3,20 @@ package logic
 import "time"
 
 func (l *Logic) startScheduler() {
-	ticker := time.NewTicker(time.Minute)
+	twitterTicker := time.NewTicker(time.Minute)
+	cleanupTicker := time.NewTicker(time.Hour * 24)
 
 	go func() {
 		for {
-			_ = <-ticker.C
+			_ = <-twitterTicker.C
 			l.scheduleTriggerTwitter()
-			l.scheduleTriggerAuth()
+		}
+	}()
+
+	go func() {
+		for {
+			_ = <-cleanupTicker.C
+			l.scheduledCleanup()
 		}
 	}()
 }

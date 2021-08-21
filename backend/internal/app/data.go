@@ -6,6 +6,8 @@ import (
 )
 
 type Data interface {
+	Cleanup() error
+
 	CountUsers() (int64, error)
 	AddUser(user *models.User) error
 	GetUserByUsername(username string) (*models.User, error)

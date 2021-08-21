@@ -7,7 +7,7 @@ import (
 
 const sessionDuration = 7 * 24 * time.Hour
 
-func (l *Logic) scheduleTriggerAuth() {
+func (l *Logic) cleanupSessions() {
 	err := l.ctx.Data.CleanupSessions()
 	if err != nil {
 		l.ctx.Log.Errorf("couldn't clean up sessions: %v", err)
