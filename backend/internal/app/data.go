@@ -27,6 +27,7 @@ type Data interface {
 	AddThread(thread *models.Thread) error
 	UpdateThread(thread *models.Thread) error
 	GetThread(id uuid.UUID, user *models.User) (*models.Thread, error)
+	GetThreads(user *models.User) ([]models.Thread, error)
 	GetScheduledThreads() ([]models.Thread, error)
 	GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error)
 	UpdateThreadWithoutTweets(thread *models.Thread) error

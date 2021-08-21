@@ -15,4 +15,5 @@ type Logic interface {
 
 	AddThread(thread *models.Thread, user *models.User) error
 	UpdateThread(thread *models.Thread, user *models.User) error
+	GetThreads(user *models.User) ([]models.Thread, error)
 }

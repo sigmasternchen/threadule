@@ -26,9 +26,21 @@ func (d *Data) GetThread(id uuid.UUID, user *models.User) (*models.Thread, error
 	err := d.db.
 		Joins("Account").
 		Where("Account.user_id = ?", user.ID).
+		Where("status != ?", models.ThreadDone).
 		First(&thread, id).
 		Error
 	return &thread, err
+}
+
+func (d *Data) GetThreads(user *models.User) ([]models.Thread, error) {
+	var threads []models.Thread
+	err := d.db.
+		Preload("Tweets").
+		Joins("Account").
+		Where("Account.user_id = ?", user.ID).
+		Find(&threads).
+		Error
+	return threads, err
 }
 
 func (d *Data) GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error) {

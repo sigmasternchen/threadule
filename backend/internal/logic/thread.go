@@ -45,3 +45,7 @@ func (l *Logic) UpdateThread(thread *models.Thread, user *models.User) error {
 	err = l.ctx.Data.UpdateThread(thread)
 	return err
 }
+
+func (l *Logic) GetThreads(user *models.User) ([]models.Thread, error) {
+	return l.ctx.Data.GetThreads(user)
+}

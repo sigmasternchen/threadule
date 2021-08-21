@@ -38,6 +38,7 @@ func UpdateThread(ctx *web.Context) {
 	thread.ID, err = uuid.FromString(ctx.Params.ByName("id"))
 	if err != nil {
 		ErrorResponse(ctx, err)
+		return
 	}
 
 	err = ctx.AppCtx.Logic.UpdateThread(&thread, ctx.Session.User)
@@ -47,6 +48,20 @@ func UpdateThread(ctx *web.Context) {
 	}
 
 	err = ctx.WriteJSON(&thread)
+	if err != nil {
+		ErrorResponse(ctx, err)
+		return
+	}
+}
+
+func GetThreads(ctx *web.Context) {
+	threads, err := ctx.AppCtx.Logic.GetThreads(ctx.Session.User)
+	if err != nil {
+		ErrorResponse(ctx, err)
+		return
+	}
+
+	err = ctx.WriteJSON(&threads)
 	if err != nil {
 		ErrorResponse(ctx, err)
 		return
