@@ -28,6 +28,7 @@ func Setup(ctx *app.Context) http.Handler {
 	router.POST("/account/:id", authenticated(AddAccountResolve))
 
 	router.POST("/thread/", authenticated(AddThread))
+	router.PUT("/thread/:id", authenticated(UpdateThread))
 
 	return router
 }

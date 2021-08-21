@@ -37,6 +37,10 @@ func (r *router) POST(path string, handler web.Handler) {
 	r.Router.POST(path, ctxWrapper(r.appCtx, handler))
 }
 
+func (r *router) PUT(path string, handler web.Handler) {
+	r.Router.PUT(path, ctxWrapper(r.appCtx, handler))
+}
+
 func (r *router) OPTIONS(path string, handler web.Handler) {
 	r.Router.OPTIONS(path, ctxWrapper(r.appCtx, handler))
 }

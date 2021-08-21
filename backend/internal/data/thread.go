@@ -1,6 +1,7 @@
 package data
 
 import (
+	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm/clause"
 	"threadule/backend/internal/data/models"
 	"time"
@@ -8,9 +9,26 @@ import (
 
 func (d *Data) UpdateThread(thread *models.Thread) error {
 	return d.db.
+		Omit("Account").
+		Save(thread).
+		Error
+}
+
+func (d *Data) UpdateThreadWithoutTweets(thread *models.Thread) error {
+	return d.db.
 		Omit(clause.Associations).
 		Save(thread).
 		Error
+}
+
+func (d *Data) GetThread(id uuid.UUID, user *models.User) (*models.Thread, error) {
+	var thread models.Thread
+	err := d.db.
+		Joins("Account").
+		Where("Account.user_id = ?", user.ID).
+		First(&thread, id).
+		Error
+	return &thread, err
 }
 
 func (d *Data) GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error) {

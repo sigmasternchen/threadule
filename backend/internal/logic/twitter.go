@@ -55,7 +55,7 @@ func (l *Logic) sendThread(thread *models.Thread) {
 	client := l.getAcountClient(thread.Account)
 
 	thread.Status = models.ThreadProcessing
-	err := l.ctx.Data.UpdateThread(thread)
+	err := l.ctx.Data.UpdateThreadWithoutTweets(thread)
 	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 
 	tweets, err := l.ctx.Data.GetTweetsForThread(thread)
@@ -66,7 +66,7 @@ func (l *Logic) sendThread(thread *models.Thread) {
 		*errorString = err.Error()
 		thread.Status = models.ThreadFailed
 		thread.Error = errorString
-		err = l.ctx.Data.UpdateThread(thread)
+		err = l.ctx.Data.UpdateThreadWithoutTweets(thread)
 		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 
 		return
@@ -100,14 +100,14 @@ func (l *Logic) sendThread(thread *models.Thread) {
 			thread.Error = errorString
 		}
 
-		err = l.ctx.Data.UpdateThread(thread)
+		err = l.ctx.Data.UpdateThreadWithoutTweets(thread)
 		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 
 		return
 	}
 
 	thread.Status = models.ThreadDone
-	err = l.ctx.Data.UpdateThread(thread)
+	err = l.ctx.Data.UpdateThreadWithoutTweets(thread)
 	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
 }
 

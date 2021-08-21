@@ -21,6 +21,27 @@ func (l *Logic) AddThread(thread *models.Thread, user *models.User) error {
 		return ErrNotFound
 	}
 
+	thread.Status = models.ThreadScheduled
+	for i := range thread.Tweets {
+		thread.Tweets[i].Status = models.TweetScheduled
+	}
+
 	err = l.ctx.Data.AddThread(thread)
+	return err
+}
+
+func (l *Logic) UpdateThread(thread *models.Thread, user *models.User) error {
+	oldThread, err := l.ctx.Data.GetThread(thread.ID, user)
+	if err != nil {
+		return ErrNotFound
+	}
+	thread.AccountID = oldThread.AccountID
+
+	thread.Status = models.ThreadScheduled
+	for i := range thread.Tweets {
+		thread.Tweets[i].Status = models.TweetScheduled
+	}
+
+	err = l.ctx.Data.UpdateThread(thread)
 	return err
 }

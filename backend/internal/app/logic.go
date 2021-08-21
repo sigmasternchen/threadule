@@ -14,4 +14,5 @@ type Logic interface {
 	AddAccountResolve(user *models.User, id string, pin string) (*models.Account, error)
 
 	AddThread(thread *models.Thread, user *models.User) error
+	UpdateThread(thread *models.Thread, user *models.User) error
 }

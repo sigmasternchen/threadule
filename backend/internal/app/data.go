@@ -1,6 +1,9 @@
 package app
 
-import "threadule/backend/internal/data/models"
+import (
+	uuid "github.com/satori/go.uuid"
+	"threadule/backend/internal/data/models"
+)
 
 type Data interface {
 	CountUsers() (int64, error)
@@ -22,9 +25,11 @@ type Data interface {
 	UpdateAccount(account *models.Account) error
 
 	AddThread(thread *models.Thread) error
+	UpdateThread(thread *models.Thread) error
+	GetThread(id uuid.UUID, user *models.User) (*models.Thread, error)
 	GetScheduledThreads() ([]models.Thread, error)
 	GetTweetsForThread(thread *models.Thread) ([]models.Tweet, error)
-	UpdateThread(thread *models.Thread) error
+	UpdateThreadWithoutTweets(thread *models.Thread) error
 
 	UpdateTweet(tweet *models.Tweet) error
 }
