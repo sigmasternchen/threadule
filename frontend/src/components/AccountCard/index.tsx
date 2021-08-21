@@ -7,15 +7,21 @@ import AddIcon from '@material-ui/icons/Add';
 import ThreadFormDialog from "../ThreadFormDialog";
 import Thread, {ThreadStatus} from "../../api/entities/Thread";
 import {TweetStatus} from "../../api/entities/Tweet";
+import {useAuth} from "../../auth/AuthProvider";
+import ThreadEndpoint from "../../api/endpoints/ThreadEndpoint";
+import {MessageBox, MessageBoxProps} from "../MessageBox";
 
 export type AccountCardProps = {
-    account: Account
+    account: Account,
+    onUpdate: (account: Account) => void,
 }
 
-const emptyThread = (): Thread => ({
-    id: "",
+const emptyThread = (account: Account): Thread => ({
     scheduled_for: new Date(),
     status: ThreadStatus.SCHEDULED,
+    account: {
+        id: account.id
+    },
     tweets: [
         {
             id: "new",
@@ -28,12 +34,31 @@ const emptyThread = (): Thread => ({
     error: null,
 })
 
-const AccountCard: FunctionComponent<AccountCardProps> = ({account}) => {
+const AccountCard: FunctionComponent<AccountCardProps> = (
+    {
+        account,
+        onUpdate
+    }
+) => {
+    const {client} = useAuth()
+
     const [editThread, setEditThread] = useState<Thread | null>(null)
 
     const openNewForm = () => {
-        setEditThread(emptyThread())
+        setEditThread(emptyThread(account))
     }
+
+    const [message, setMessage] = useState<MessageBoxProps>({
+        open: false,
+        success: false,
+        message: "",
+        onClose: () => {
+            setMessage({
+                ...message,
+                open: false
+            })
+        }
+    })
 
     return (
         <>
@@ -64,17 +89,63 @@ const AccountCard: FunctionComponent<AccountCardProps> = ({account}) => {
             <ThreadFormDialog
                 account={account}
                 open={Boolean(editThread)}
-                initial={editThread ? editThread : emptyThread()}
+                initial={editThread ? editThread : emptyThread(account)}
                 onSubmit={(thread) => {
-                    account.threads.push(thread)
+                    thread.tweets.forEach(t => {
+                        t.id = undefined
+                    })
 
-                    setEditThread(null)
+                    const endpoint = new ThreadEndpoint(client)
+                    const onSuccess = (result: Thread) => {
+                        setEditThread(null)
+                        if (!thread.id) {
+                            setMessage({
+                                ...message,
+                                open: true,
+                                success: true,
+                                message: "Thread was added successfully."
+                            })
+                            account.threads.push(result)
+                        } else {
+                            setMessage({
+                                ...message,
+                                open: true,
+                                success: true,
+                                message: "Thread was updated successfully."
+                            })
+                            account.threads = account.threads.filter(t => t.id != result.id)
+                            account.threads.push(result)
+                        }
+                        account.threads = account.threads.sort((a, b) => a.scheduled_for > b.scheduled_for ? 1 : -1)
+                        onUpdate(account)
+                    }
+                    const onFailure = (error: any) => {
+                        console.error(error)
+                        setMessage({
+                            ...message,
+                            open: true,
+                            success: false,
+                            message: "Something went wrong."
+                        })
+                    }
+
+                    if (!thread.id) {
+                        endpoint.add(thread)
+                            .then(onSuccess)
+                            .catch(onFailure)
+                    } else {
+                        // TODO
+                        console.log("we shouldn't be here")
+                        console.log(thread)
+                    }
                 }}
                 onCancel={() => {
                     // TODO show confirmation
                     setEditThread(null)
                 }}
             />
+
+            <MessageBox {...message} />
         </>
     )
 }

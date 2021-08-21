@@ -71,9 +71,16 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                 }
                 <Grid item container spacing={4}>
                     {
-                        accounts.map((account) => (
+                        accounts.map((account, index) => (
                             <Grid item xs={4} key={account.id}>
-                                <AccountCard account={account}/>
+                                <AccountCard
+                                    account={account}
+                                    onUpdate={(account: Account) => {
+                                        accounts[index] = account
+                                        console.log(accounts)
+                                        setAccounts([...accounts])
+                                    }}
+                                />
                             </Grid>
                         ))
                     }

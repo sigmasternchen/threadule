@@ -6,7 +6,7 @@ export enum TweetStatus {
 }
 
 type Tweet = {
-    id: string,
+    id?: string,
     text: string,
     status: TweetStatus,
     tweet_id: number|null,

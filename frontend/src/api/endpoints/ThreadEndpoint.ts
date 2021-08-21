@@ -2,7 +2,7 @@ import {Client} from "../client";
 import Endpoint from "./Endpoint";
 import Thread from "../entities/Thread";
 
-const API_PREFIX = "/api/account/"
+const API_PREFIX = "/api/thread/"
 
 class ThreadEndpoint extends Endpoint {
     constructor(client: Client) {

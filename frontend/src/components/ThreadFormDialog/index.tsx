@@ -30,7 +30,6 @@ export type ThreadFormProps = {
 const Index: FunctionComponent<ThreadFormProps> = (
     {
         open,
-        account,
         initial,
         onSubmit,
         onCancel
@@ -94,7 +93,7 @@ const Index: FunctionComponent<ThreadFormProps> = (
                                 >
                                     {
                                         thread.tweets.map((tweet, index) => (
-                                            <Draggable draggableId={tweet.id} index={index}>
+                                            <Draggable draggableId={tweet.id!} index={index}>
                                                 {(provided, snapshot) => (
                                                     <Grid
                                                         container

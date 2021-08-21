@@ -8,7 +8,10 @@ export enum ThreadStatus {
 }
 
 type Thread = {
-    id: string,
+    id?: string,
+    account: {
+        id: string,
+    },
     tweets: Tweet[],
     scheduled_for: Date,
     status: ThreadStatus,
