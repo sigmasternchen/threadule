@@ -21,6 +21,43 @@ export type ThreadFormProps = {
     onSubmit: (thread: Thread) => void
 }
 
+class CustomDate extends Date {
+    constructor(date?: Date) {
+        super(date ? date : new Date())
+    }
+
+    public toLocalISOString(milliseconds: boolean = true,
+                            timezone: boolean = true): string {
+        const month = this.getMonth()
+        const day = this.getDay()
+        const hours = this.getHours()
+        const minutes = this.getMinutes()
+        const seconds = this.getSeconds()
+
+        let result =
+            this.getFullYear() + "-" +
+            (month < 10 ? "0" : "") + month + "-" +
+            (day < 10 ? "0" : "") + day + "T" +
+            (hours < 10 ? "0" : "") + hours + ":" +
+            (minutes < 10 ? "0" : "") + minutes + ":" +
+            (seconds < 10 ? "0" : "") + seconds
+        if (milliseconds) {
+            result += "." + this.getMilliseconds()
+        }
+        if (timezone) {
+            const offset = -this.getTimezoneOffset()
+            const hourOffset = Math.floor(Math.abs(offset) / 60)
+            const minuteOffset = offset % 60
+            result +=
+                (offset > 0 ? "+" : "-") +
+                (hourOffset < 10 ? "0" : "") + hourOffset +
+                (minuteOffset < 10 ? "0" : "") + minuteOffset
+        }
+
+        return result
+    }
+}
+
 const Index: FunctionComponent<ThreadFormProps> = ({open, account, initial, onSubmit}) => {
     const [thread, setThread] = useState<Thread>(initial)
 
@@ -34,7 +71,9 @@ const Index: FunctionComponent<ThreadFormProps> = ({open, account, initial, onSu
                             id="datetime-local"
                             label="Scheduled For"
                             type="datetime-local"
-                            value={thread.scheduled_for.toISOString().replace(/:[0-9]{2}\.[0-9]{3}.*/, "")}
+                            value={
+                                new CustomDate(thread.scheduled_for).toLocalISOString(false, false)
+                            }
                             onChange={event => {
                                 setThread({
                                     ...thread,
