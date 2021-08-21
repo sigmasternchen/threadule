@@ -6,16 +6,25 @@ import ThreadList from "../ThreadList";
 import AddIcon from '@material-ui/icons/Add';
 import ThreadFormDialog from "../ThreadFormDialog";
 import Thread, {ThreadStatus} from "../../api/entities/Thread";
+import {TweetStatus} from "../../api/entities/Tweet";
 
 export type AccountCardProps = {
     account: Account
 }
 
-const emptyThread = () => ({
+const emptyThread = (): Thread => ({
     id: "",
     scheduled_for: new Date(),
     status: ThreadStatus.SCHEDULED,
-    tweets: [],
+    tweets: [
+        {
+            id: "",
+            text: "",
+            status: TweetStatus.SCHEDULED,
+            tweet_id: null,
+            error: null,
+        }
+    ],
     error: null,
 })
 
@@ -59,6 +68,10 @@ const AccountCard: FunctionComponent<AccountCardProps> = ({account}) => {
                 onSubmit={(thread) => {
                     account.threads.push(thread)
 
+                    setEditThread(null)
+                }}
+                onCancel={() => {
+                    // TODO show confirmation
                     setEditThread(null)
                 }}
             />
