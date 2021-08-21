@@ -18,7 +18,7 @@ const emptyThread = (): Thread => ({
     status: ThreadStatus.SCHEDULED,
     tweets: [
         {
-            id: "",
+            id: "new",
             text: "",
             status: TweetStatus.SCHEDULED,
             tweet_id: null,
