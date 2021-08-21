@@ -10,6 +10,7 @@ func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	err := d.db.
 		Preload("Threads").
 		Where("user_id = ?", user.ID).
+		Where("access_token IS NOT NULL").
 		Find(&accounts).
 		Error
 	if err != nil {

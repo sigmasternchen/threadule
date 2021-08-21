@@ -12,6 +12,10 @@ import AccountDialog from "../../components/AccountDialog";
 type DashboardProps = {}
 
 const Dashboard: FunctionComponent<DashboardProps> = () => {
+    const [_reload, _setReload] = useState<number>(0)
+    const reload = () => {
+        _setReload(_reload + 1)
+    }
     const [loading, setLoading] = useState<boolean>(true)
     const [accounts, setAccounts] = useState<Account[]>([])
 
@@ -47,7 +51,7 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                     message: "Couldn't fetch accounts."
                 })
             })
-    }, [])
+    }, [_reload])
 
     return (
         <>
@@ -80,6 +84,7 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
                 open={openNewAccountDialog}
                 onSuccess={() => {
                     setOpenNewAccountDialog(false)
+                    reload()
                 }}
                 onCancel={() => {
                     setOpenNewAccountDialog(false)
