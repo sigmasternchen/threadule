@@ -9,6 +9,7 @@ func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	var accounts []models.Account
 	err := d.db.
 		Preload("Threads").
+		Preload("Threads.Tweets").
 		Where("user_id = ?", user.ID).
 		Where("access_token IS NOT NULL").
 		Find(&accounts).
