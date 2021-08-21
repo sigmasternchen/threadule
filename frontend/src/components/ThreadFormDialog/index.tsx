@@ -28,21 +28,15 @@ class CustomDate extends Date {
 
     public toLocalISOString(milliseconds: boolean = true,
                             timezone: boolean = true): string {
-        const month = this.getMonth()
-        const day = this.getDay()
-        const hours = this.getHours()
-        const minutes = this.getMinutes()
-        const seconds = this.getSeconds()
-
         let result =
             this.getFullYear() + "-" +
-            (month < 10 ? "0" : "") + month + "-" +
-            (day < 10 ? "0" : "") + day + "T" +
-            (hours < 10 ? "0" : "") + hours + ":" +
-            (minutes < 10 ? "0" : "") + minutes + ":" +
-            (seconds < 10 ? "0" : "") + seconds
+            (String(this.getMonth()).padStart(2, "0")) + "-" +
+            (String(this.getDay()).padStart(2, "0")) + "T" +
+            (String(this.getHours()).padStart(2, "0")) + ":" +
+            (String(this.getMinutes()).padStart(2, "0")) + ":" +
+            (String(this.getSeconds()).padStart(2, "0"))
         if (milliseconds) {
-            result += "." + this.getMilliseconds()
+            result += "." + (String(this.getMilliseconds()).padStart(3, "0"))
         }
         if (timezone) {
             const offset = -this.getTimezoneOffset()
@@ -50,8 +44,8 @@ class CustomDate extends Date {
             const minuteOffset = offset % 60
             result +=
                 (offset > 0 ? "+" : "-") +
-                (hourOffset < 10 ? "0" : "") + hourOffset +
-                (minuteOffset < 10 ? "0" : "") + minuteOffset
+                (String(hourOffset).padStart(2, "0")) +
+                (String(minuteOffset).padStart(2, "0"))
         }
 
         return result
