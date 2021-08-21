@@ -7,8 +7,8 @@ class CustomDate extends Date {
                             timezone: boolean = true): string {
         let result =
             this.getFullYear() + "-" +
-            (String(this.getMonth()).padStart(2, "0")) + "-" +
-            (String(this.getDay()).padStart(2, "0")) + "T" +
+            (String(this.getMonth() + 1).padStart(2, "0")) + "-" +
+            (String(this.getDate()).padStart(2, "0")) + "T" +
             (String(this.getHours()).padStart(2, "0")) + ":" +
             (String(this.getMinutes()).padStart(2, "0")) + ":" +
             (String(this.getSeconds()).padStart(2, "0"))
