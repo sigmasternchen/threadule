@@ -1,4 +1,4 @@
-import {FunctionComponent, useState} from "react";
+import {FunctionComponent, useEffect, useState} from "react";
 import {
     Button,
     Dialog,
@@ -36,6 +36,16 @@ const AccountDialog: FunctionComponent<AccountFormDialogProps> = (
     const [code, setCode] = useState<string>("")
 
     const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (!open) {
+            // dialog is closed; reset component
+            setError(null)
+            setCode("")
+            setAccountId(null)
+            setActiveStep(0)
+        }
+    })
 
     return (
         <Dialog open={open}>

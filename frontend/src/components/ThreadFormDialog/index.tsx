@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useState} from "react";
+import React, {FunctionComponent, useEffect, useState} from "react";
 import {
     Button,
     Dialog,
@@ -7,6 +7,7 @@ import {
     DialogTitle,
     Grid,
     IconButton,
+    InputAdornment,
     TextField
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -41,9 +42,20 @@ const Index: FunctionComponent<ThreadFormProps> = (
         return _idCounter
     }
 
+    const [_initial, _setInitial] = useState<Thread>(initial)
     const [thread, setThread] = useState<Thread>(initial)
 
     const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (initial != _initial) {
+            // initial changed
+            _setInitial(initial)
+            setThread(initial)
+            setError(null)
+            _setIdCounter(0)
+        }
+    })
 
     return (
         <Dialog open={open}>
@@ -113,6 +125,14 @@ const Index: FunctionComponent<ThreadFormProps> = (
                                                                         ...thread
                                                                     })
                                                                 }}
+                                                                InputProps={{
+                                                                    endAdornment: (
+                                                                        <InputAdornment position="end">
+                                                                            {280 - thread.tweets[index].text.length}
+                                                                        </InputAdornment>
+                                                                    )
+                                                                }}
+
                                                                 variant="outlined"
                                                                 fullWidth
                                                             />
