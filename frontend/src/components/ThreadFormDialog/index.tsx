@@ -168,6 +168,7 @@ const Index: FunctionComponent<ThreadFormProps> = (
                                 text: "",
                                 status: TweetStatus.SCHEDULED,
                                 tweet_id: null,
+                                ordinal: 0,
                                 error: null
                             })
                             setThread({
@@ -196,6 +197,10 @@ const Index: FunctionComponent<ThreadFormProps> = (
                         setError("Tweets can't be longer than 280 characters!")
                         return
                     }
+                    thread.tweets.forEach((tweet, index) => {
+                        tweet.ordinal = index
+                    })
+
                     setError(null)
                     onSubmit(thread)
                 }} color="primary">

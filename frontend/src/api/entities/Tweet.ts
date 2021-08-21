@@ -11,6 +11,7 @@ type Tweet = {
     status: TweetStatus,
     tweet_id: number|null,
     error: string|null
+    ordinal: number
 }
 
 export default Tweet
