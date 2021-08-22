@@ -32,7 +32,9 @@ func (l *Logic) sendTweet(client *twitter.Client, tweet *models.Tweet, prevId in
 
 	tweet.Status = models.TweetDone
 	err = l.ctx.Data.UpdateTweet(tweet)
-	l.ctx.Log.Errorf("couldn't update tweet in DB: %v", err)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't update tweet in DB: %v", err)
+	}
 
 	return status.ID, nil
 }
@@ -56,7 +58,9 @@ func (l *Logic) sendThread(thread *models.Thread) {
 
 	thread.Status = models.ThreadProcessing
 	err := l.ctx.Data.UpdateThreadWithoutTweets(thread)
-	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+	}
 
 	tweets, err := l.ctx.Data.GetTweetsForThread(thread)
 	if err != nil {
@@ -101,7 +105,9 @@ func (l *Logic) sendThread(thread *models.Thread) {
 		}
 
 		err = l.ctx.Data.UpdateThreadWithoutTweets(thread)
-		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+		if err != nil {
+			l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+		}
 
 		return
 	}

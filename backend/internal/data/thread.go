@@ -67,6 +67,7 @@ func (d *Data) GetScheduledThreads() ([]models.Thread, error) {
 	var threads []models.Thread
 
 	err := d.db.
+		Joins("Account").
 		Where("scheduled_for <= ?", time.Now()).
 		Where("status = ?", models.ThreadScheduled).
 		Find(&threads).
