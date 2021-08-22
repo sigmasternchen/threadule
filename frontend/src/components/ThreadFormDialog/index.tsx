@@ -59,7 +59,7 @@ const Index: FunctionComponent<ThreadFormProps> = (
     return (
         <Dialog open={open}>
             <DialogTitle title={"Thread"}/>
-            <DialogContent>
+            <DialogContent style={{overflowY: "unset"}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
@@ -102,7 +102,11 @@ const Index: FunctionComponent<ThreadFormProps> = (
                                 >
                                     {
                                         thread.tweets.map((tweet, index) => (
-                                            <Draggable draggableId={tweet.id!} index={index}>
+                                            <Draggable
+                                                draggableId={tweet.id!}
+                                                index={index}
+                                                key={tweet.id!}
+                                            >
                                                 {(provided, snapshot) => (
                                                     <Grid
                                                         container

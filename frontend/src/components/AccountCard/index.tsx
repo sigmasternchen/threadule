@@ -102,9 +102,8 @@ const AccountCard: FunctionComponent<AccountCardProps> = (
                 open={Boolean(editThread)}
                 initial={editThread ? editThread : emptyThread(account)}
                 onSubmit={(thread) => {
-                    thread.tweets.forEach(t => {
-                        t.id = undefined
-                    })
+                    thread = {...thread}
+                    thread.tweets = thread.tweets.map(t => ({...t, id: undefined}))
 
                     const endpoint = new ThreadEndpoint(client)
                     const onSuccess = (result: Thread) => {
