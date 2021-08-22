@@ -28,8 +28,12 @@ func ErrorResponse(ctx *web.Context, err error) {
 		StatusResponse(ctx, http.StatusNotFound, err.Error())
 	case logic.ErrInvalidParameter:
 		StatusResponse(ctx, http.StatusBadRequest, err.Error())
+	case logic.ErrInsufficientPrivilege:
+		StatusResponse(ctx, http.StatusForbidden, err.Error())
 	case logic.ErrLoginFailed:
 		StatusResponse(ctx, http.StatusForbidden, err.Error())
+	case logic.ErrConflict:
+		StatusResponse(ctx, http.StatusConflict, err.Error())
 	case logic.ErrInvalidSession:
 		StatusResponse(ctx, http.StatusUnauthorized, err.Error())
 	case logic.ErrInternalError:

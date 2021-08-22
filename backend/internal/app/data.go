@@ -10,6 +10,8 @@ type Data interface {
 
 	CountUsers() (int64, error)
 	AddUser(user *models.User) error
+	UpdateUser(user *models.User) error
+	GetUser(id uuid.UUID) (*models.User, error)
 	GetUserByUsername(username string) (*models.User, error)
 	AddUserToGroup(user *models.User, group *models.Group) error
 	DeleteUserFromGroup(user *models.User, group *models.Group) error

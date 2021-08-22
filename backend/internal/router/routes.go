@@ -21,7 +21,6 @@ func Setup(ctx *app.Context) http.Handler {
 	})
 
 	router.POST("/authentication", Login)
-	router.GET("/authentication", authenticated(GetAuthenticationData))
 
 	router.GET("/account/", authenticated(GetAccounts))
 	router.POST("/account/", authenticated(AddAccount))
@@ -31,6 +30,9 @@ func Setup(ctx *app.Context) http.Handler {
 	router.POST("/thread/", authenticated(AddThread))
 	router.PUT("/thread/:id", authenticated(UpdateThread))
 	router.DELETE("/thread/:id", authenticated(DeleteThread))
+
+	router.GET("/self/", authenticated(GetSelf))
+	router.PUT("/self/", authenticated(UpdateSelf))
 
 	return router
 }

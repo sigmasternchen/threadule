@@ -1,7 +1,6 @@
 package presentation
 
 import (
-	"fmt"
 	"net/http"
 	"threadule/backend/internal/presentation/dto"
 	"threadule/backend/internal/web"
@@ -24,14 +23,6 @@ func Login(ctx *web.Context) {
 	err = ctx.WriteJSON(&dto.LoginResponse{
 		Token: sessionToken,
 	})
-	if err != nil {
-		ErrorResponse(ctx, err)
-	}
-}
-
-func GetAuthenticationData(ctx *web.Context) {
-	fmt.Println(ctx.Session.User)
-	err := ctx.WriteJSON(ctx.Session.User)
 	if err != nil {
 		ErrorResponse(ctx, err)
 	}

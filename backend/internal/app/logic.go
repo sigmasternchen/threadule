@@ -7,6 +7,8 @@ import (
 )
 
 type Logic interface {
+	UpdateUser(userToUpdate *models.User, currentUser *models.User) error
+
 	AuthenticateSession(token string) (*models.User, error)
 	Login(username, password string) (string, error)
 
