@@ -55,10 +55,7 @@ const Dashboard: FunctionComponent<DashboardProps> = () => {
 
     return (
         <>
-            <Grid container style={{
-                marginTop: "40px",
-                boxSizing: "border-box",
-            }}>
+            <Grid container className={styles.container}>
                 {loading &&
                 <CircularProgress/>
                 }

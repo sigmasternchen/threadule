@@ -1,3 +1,8 @@
+.container {
+    margin-top: 40px;
+    box-sizing: border-box;
+}
+
 .addButton {
     position: fixed !important;
     bottom: 50px;

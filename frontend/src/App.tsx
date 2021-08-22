@@ -6,6 +6,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import MenuBar from "./components/MenuBar";
+import Settings from "./pages/Settings";
 
 function App() {
     return (
@@ -15,9 +16,13 @@ function App() {
                     <Route path="/login">
                         <Login/>
                     </Route>
-                    <PrivateRoute path="/">
-                        <MenuBar />
+                    <PrivateRoute exact path="/">
+                        <MenuBar pageName="Dashboard" />
                         <Dashboard />
+                    </PrivateRoute>
+                    <PrivateRoute path="/settings">
+                        <MenuBar pageName="Settings" />
+                        <Settings />
                     </PrivateRoute>
                     <Route path="/*">
                         <Redirect to={"/login"} />

@@ -3,13 +3,15 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {FunctionComponent, useState} from "react";
 import {useAuth} from "../../auth/AuthProvider";
 import {AccountCircle} from "@material-ui/icons";
+import {Link, useHistory} from "react-router-dom";
 
 type MenuBarProps = {
-
+    pageName: string
 }
 
-const MenuBar: FunctionComponent<MenuBarProps> = () => {
+const MenuBar: FunctionComponent<MenuBarProps> = ({pageName}) => {
     const { user, logout } = useAuth()
+    const history = useHistory()
 
     const [anchorEl, setAnchorEl] = useState<HTMLElement|null>(null)
     const open = Boolean(anchorEl);
@@ -29,7 +31,12 @@ const MenuBar: FunctionComponent<MenuBarProps> = () => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" style={{flexGrow: 1}}>
-                    Threadule
+                    <Link to={"/"} style={{
+                        color: "inherit",
+                        textDecoration: "inherit"
+                    }}>
+                        Threadule - {pageName}
+                    </Link>
                 </Typography>
                 <IconButton
                     aria-label="account of current user"
@@ -55,6 +62,7 @@ const MenuBar: FunctionComponent<MenuBarProps> = () => {
                     open={open}
                     onClose={handleClose}
                 >
+                    <MenuItem onClick={() => history.push("/settings")}>Settings</MenuItem>
                     <MenuItem onClick={logout}>Logout</MenuItem>
                 </Menu>
             </Toolbar>
