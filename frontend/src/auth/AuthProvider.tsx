@@ -3,6 +3,7 @@ import AuthenticationEndpoint from "../api/endpoints/AuthenticationEndpoint";
 import {Client, getClient} from "../api/client";
 import User from "../api/entities/User";
 import {Backdrop, CircularProgress} from "@material-ui/core";
+import SelfEndpoint from "../api/endpoints/SelfEndpoint";
 
 type AuthState = {
     loggedIn: boolean
@@ -55,8 +56,8 @@ const AuthProvider: FunctionComponent<AuthProviderProps> = ({children}) => {
             const client = getClient(response.token)
 
             // local new authenticationEndpoint
-            authenticationEndpoint = new AuthenticationEndpoint(client)
-            const user = await authenticationEndpoint.getUser()
+            const selfEndpoint = new SelfEndpoint(client)
+            const user = await selfEndpoint.getUser()
 
             setAuthState({
                 ...authState,
@@ -85,8 +86,8 @@ const AuthProvider: FunctionComponent<AuthProviderProps> = ({children}) => {
     useEffect(() => {
         if (initialSessionToken) {
             const client = getClient(initialSessionToken)
-            const authenticationEndpoint = new AuthenticationEndpoint(client)
-            authenticationEndpoint.getUser()
+            const selfEndpoint = new SelfEndpoint(client)
+            selfEndpoint.getUser()
                 .then(user => {
                     setAuthState({
                         ...authState,
