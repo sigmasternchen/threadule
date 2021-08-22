@@ -114,7 +114,9 @@ func (l *Logic) sendThread(thread *models.Thread) {
 
 	thread.Status = models.ThreadDone
 	err = l.ctx.Data.UpdateThreadWithoutTweets(thread)
-	l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+	if err != nil {
+		l.ctx.Log.Errorf("couldn't update thread in DB: %v", err)
+	}
 }
 
 func (l *Logic) scheduleTriggerTwitter() {
