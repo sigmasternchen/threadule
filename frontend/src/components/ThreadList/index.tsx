@@ -7,9 +7,10 @@ import styles from "./ThreadList.module.css"
 
 export type ThreadListProps = {
     threads: Thread[]
+    onSelect: (thread: Thread) => void
 }
 
-const ThreadList: FunctionComponent<ThreadListProps> = ({threads}) => {
+const ThreadList: FunctionComponent<ThreadListProps> = ({threads, onSelect}) => {
     if (threads.length == 0) {
         return (
             <Typography style={{
@@ -23,7 +24,13 @@ const ThreadList: FunctionComponent<ThreadListProps> = ({threads}) => {
             <List>
                 {threads.map(thread => {
                     return (
-                        <ListItem key={thread.id}>
+                        <ListItem
+                            button
+                            key={thread.id}
+                            onClick={() => {
+                                onSelect(thread)
+                            }}
+                        >
                             <ListItemAvatar>
                                 <Avatar>
                                     {thread.tweets.length}

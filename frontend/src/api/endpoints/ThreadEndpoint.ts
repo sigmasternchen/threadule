@@ -13,6 +13,10 @@ class ThreadEndpoint extends Endpoint {
     public async add(thread: Thread): Promise<Thread> {
         return await this.post<Thread, Thread>(API_PREFIX, thread)
     }
+
+    public async update(thread: Thread): Promise<Thread> {
+        return await this.put<Thread, Thread>(API_PREFIX + thread.id, thread)
+    }
 }
 
 export default ThreadEndpoint

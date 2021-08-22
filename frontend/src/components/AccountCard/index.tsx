@@ -29,6 +29,7 @@ const emptyThread = (account: Account): Thread => ({
             status: TweetStatus.SCHEDULED,
             tweet_id: null,
             error: null,
+            ordinal: 0,
         }
     ],
     error: null,
@@ -46,6 +47,9 @@ const AccountCard: FunctionComponent<AccountCardProps> = (
 
     const openNewForm = () => {
         setEditThread(emptyThread(account))
+    }
+    const openEditForm = (thread: Thread) => {
+        setEditThread(thread)
     }
 
     const [message, setMessage] = useState<MessageBoxProps>({
@@ -75,7 +79,10 @@ const AccountCard: FunctionComponent<AccountCardProps> = (
                     subheader={account.screen_name}
                 />
                 <CardContent>
-                    <ThreadList threads={account.threads}/>
+                    <ThreadList
+                        threads={account.threads}
+                        onSelect={openEditForm}
+                    />
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="add" onClick={() => {
