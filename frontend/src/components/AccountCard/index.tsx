@@ -141,9 +141,9 @@ const AccountCard: FunctionComponent<AccountCardProps> = (
                             .then(onSuccess)
                             .catch(onFailure)
                     } else {
-                        // TODO
-                        console.log("we shouldn't be here")
-                        console.log(thread)
+                        endpoint.update(thread)
+                            .then(onSuccess)
+                            .catch(onFailure)
                     }
                 }}
                 onCancel={() => {
