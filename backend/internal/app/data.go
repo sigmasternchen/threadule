@@ -28,6 +28,7 @@ type Data interface {
 
 	AddThread(thread *models.Thread) error
 	UpdateThread(thread *models.Thread) error
+	DeleteThread(id uuid.UUID) error
 	GetThread(id uuid.UUID, user *models.User) (*models.Thread, error)
 	GetThreads(user *models.User) ([]models.Thread, error)
 	GetScheduledThreads() ([]models.Thread, error)

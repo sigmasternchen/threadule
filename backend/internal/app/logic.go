@@ -1,6 +1,7 @@
 package app
 
 import (
+	uuid "github.com/satori/go.uuid"
 	"net/url"
 	"threadule/backend/internal/data/models"
 )
@@ -15,5 +16,6 @@ type Logic interface {
 
 	AddThread(thread *models.Thread, user *models.User) error
 	UpdateThread(thread *models.Thread, user *models.User) error
+	DeleteThread(id uuid.UUID) error
 	GetThreads(user *models.User) ([]models.Thread, error)
 }

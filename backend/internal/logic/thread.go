@@ -46,6 +46,10 @@ func (l *Logic) UpdateThread(thread *models.Thread, user *models.User) error {
 	return err
 }
 
+func (l *Logic) DeleteThread(id uuid.UUID) error {
+	return l.ctx.Data.DeleteThread(id)
+}
+
 func (l *Logic) GetThreads(user *models.User) ([]models.Thread, error) {
 	return l.ctx.Data.GetThreads(user)
 }

@@ -54,6 +54,20 @@ func UpdateThread(ctx *web.Context) {
 	}
 }
 
+func DeleteThread(ctx *web.Context) {
+	id, err := uuid.FromString(ctx.Params.ByName("id"))
+	if err != nil {
+		ErrorResponse(ctx, err)
+		return
+	}
+
+	err = ctx.AppCtx.Logic.DeleteThread(id)
+	if err != nil {
+		ErrorResponse(ctx, err)
+		return
+	}
+}
+
 func GetThreads(ctx *web.Context) {
 	threads, err := ctx.AppCtx.Logic.GetThreads(ctx.Session.User)
 	if err != nil {

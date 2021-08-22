@@ -31,6 +31,10 @@ func (d *Data) UpdateThreadWithoutTweets(thread *models.Thread) error {
 		Error
 }
 
+func (d *Data) DeleteThread(id uuid.UUID) error {
+	return d.db.Delete(&models.Thread{}, id).Error
+}
+
 func (d *Data) GetThread(id uuid.UUID, user *models.User) (*models.Thread, error) {
 	var thread models.Thread
 	err := d.db.

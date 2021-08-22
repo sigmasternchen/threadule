@@ -17,6 +17,10 @@ class ThreadEndpoint extends Endpoint {
     public async update(thread: Thread): Promise<Thread> {
         return await this.put<Thread, Thread>(API_PREFIX + thread.id, thread)
     }
+
+    public async remove(thread: Thread): Promise<void> {
+        return await this.delete<void>(API_PREFIX + thread.id)
+    }
 }
 
 export default ThreadEndpoint

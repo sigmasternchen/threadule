@@ -30,6 +30,7 @@ func Setup(ctx *app.Context) http.Handler {
 	router.GET("/thread", authenticated(GetThreads))
 	router.POST("/thread/", authenticated(AddThread))
 	router.PUT("/thread/:id", authenticated(UpdateThread))
+	router.DELETE("/thread/:id", authenticated(DeleteThread))
 
 	return router
 }

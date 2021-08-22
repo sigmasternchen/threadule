@@ -82,6 +82,10 @@ const AccountCard: FunctionComponent<AccountCardProps> = (
                     <ThreadList
                         threads={account.threads}
                         onSelect={openEditForm}
+                        onDelete={(thread) => {
+                            account.threads = account.threads.filter(t => t.id != thread.id)
+                            onUpdate(account)
+                        }}
                     />
                 </CardContent>
                 <CardActions disableSpacing>
