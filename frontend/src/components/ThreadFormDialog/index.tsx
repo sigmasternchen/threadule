@@ -80,10 +80,19 @@ const Index: FunctionComponent<ThreadFormProps> = (
                             }}
                         />
                     </Grid>
-                    <DragDropContext onDragEnd={() => {
+                    <DragDropContext onDragEnd={(result) => {
+                        if (!result.destination) {
+                            return
+                        }
+
+                        const tweet = thread.tweets.splice(result.source.index, 1)
+                        thread.tweets.splice(result.destination!.index, 0, ...tweet)
+                        setThread({
+                            ...thread
+                        })
                     }}>
                         <Droppable droppableId={"1"}>
-                            {(provided, snapshot) => (
+                            {(provided) => (
                                 <Grid
                                     container
                                     item
