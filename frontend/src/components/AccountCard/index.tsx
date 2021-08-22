@@ -17,7 +17,7 @@ export type AccountCardProps = {
 }
 
 const emptyThread = (account: Account): Thread => ({
-    scheduled_for: new Date(),
+    scheduled_for: new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
     status: ThreadStatus.SCHEDULED,
     account: {
         id: account.id
