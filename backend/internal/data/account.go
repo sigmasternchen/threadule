@@ -10,7 +10,9 @@ func (d *Data) GetAccountsByUser(user *models.User) ([]models.Account, error) {
 	var accounts []models.Account
 	err := d.db.
 		Preload("Threads", func(db *gorm.DB) *gorm.DB {
-			return db.Order("scheduled_for ASC")
+			return db.
+				Where("status != ?", models.ThreadDone).
+				Order("scheduled_for ASC")
 		}).
 		Preload("Threads.Tweets", func(db *gorm.DB) *gorm.DB {
 			return db.Order("ordinal ASC")
