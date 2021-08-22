@@ -46,7 +46,15 @@ func (l *Logic) UpdateThread(thread *models.Thread, user *models.User) error {
 	return err
 }
 
-func (l *Logic) DeleteThread(id uuid.UUID) error {
+func (l *Logic) DeleteThread(id uuid.UUID, user *models.User) error {
+	t, err := l.ctx.Data.GetThread(id, user)
+	if err != nil {
+		return ErrNotFound
+	}
+	if t.Account.UserID != user.ID {
+		// invalid user
+		return ErrNotFound
+	}
 	return l.ctx.Data.DeleteThread(id)
 }
 

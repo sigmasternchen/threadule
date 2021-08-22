@@ -61,7 +61,7 @@ func DeleteThread(ctx *web.Context) {
 		return
 	}
 
-	err = ctx.AppCtx.Logic.DeleteThread(id)
+	err = ctx.AppCtx.Logic.DeleteThread(id, ctx.Session.User)
 	if err != nil {
 		ErrorResponse(ctx, err)
 		return
