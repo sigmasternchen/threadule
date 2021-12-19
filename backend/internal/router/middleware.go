@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 	"strings"
-	"threadule/backend/internal/presentation"
+	. "threadule/backend/internal/presentation"
 	"threadule/backend/internal/web"
 )
 
@@ -13,14 +13,14 @@ func authenticated(next web.Handler) web.Handler {
 	return func(ctx *web.Context) {
 		authHeader := ctx.Request.Header.Get("Authorization")
 		if !strings.HasPrefix(authHeader, authPrefix) {
-			presentation.StatusResponse(ctx, http.StatusBadRequest, "Authorization header missing or malformed")
+			StatusResponse(ctx, http.StatusBadRequest, "Authorization header missing or malformed")
 			return
 		}
 		authHeader = strings.TrimPrefix(authHeader, authPrefix)
 
 		user, err := ctx.AppCtx.Logic.AuthenticateSession(authHeader)
 		if err != nil {
-			presentation.StatusResponse(ctx, http.StatusUnauthorized, err.Error())
+			StatusResponse(ctx, http.StatusUnauthorized, err.Error())
 			return
 		}
 
