@@ -10,7 +10,7 @@ import (
 	"threadule/backend/internal/config"
 	"threadule/backend/internal/data"
 	"threadule/backend/internal/logic"
-	router "threadule/backend/internal/router"
+	"threadule/backend/internal/router"
 	"threadule/backend/internal/web"
 )
 
