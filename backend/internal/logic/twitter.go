@@ -1,12 +1,12 @@
 package logic
 
 import (
+	"github.com/dghubble/go-twitter/twitter"
+	"github.com/dghubble/oauth1"
+	twitterOAuth "github.com/dghubble/oauth1/twitter"
 	"net/url"
 	"threadule/backend/internal/data/models"
 )
-import "github.com/dghubble/oauth1"
-import "github.com/dghubble/go-twitter/twitter"
-import twitterOAuth "github.com/dghubble/oauth1/twitter"
 
 func (l *Logic) sendTweet(client *twitter.Client, tweet *models.Tweet, prevId int64) (int64, error) {
 	status, _, err := client.Statuses.Update(

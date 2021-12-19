@@ -7,11 +7,13 @@ import (
 	"time"
 )
 
-const defaultPasswordLength = 16
-const defaultPasswordCharSet = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-	"0123456789" +
-	"=!$%&+#-_.,;:"
+const (
+	defaultPasswordLength  = 16
+	defaultPasswordCharSet = "abcdefghijklmnopqrstuvwxyz" +
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+		"0123456789" +
+		"=!$%&+#-_.,;:"
+)
 
 func (l *Logic) defaultPassword() string {
 	builder := strings.Builder{}
